@@ -1,0 +1,7 @@
+{
+  "name": "productManagement",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

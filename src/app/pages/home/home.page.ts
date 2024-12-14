@@ -1,5 +1,5 @@
 import { AlertController } from '@ionic/angular';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ionicImports } from 'src/app/shared/providers/ionic-imports';
@@ -14,8 +14,20 @@ import { ActivatedRoute, Router } from '@angular/router';
   imports: [ionicImports, CommonModule, FormsModule],
 })
 export class HomePage implements OnInit {
-  productsSignal: any;
-  filteredProduct: any;
+  productsSignal = signal<any[]>([]);
+  filteredProductSignal = signal<any[]>([]);
+
+  private productService = inject(ProductService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private alertController = inject(AlertController);
+
+  ngOnInit() {
+    this.route.params.subscribe(() => {
+      this.productsSignal.set(this.productService.fetchProducts());
+      this.filteredProductSignal.set(this.productsSignal());
+    });
+  }
 
   async presentAlert(id: number) {
     const alert = await this.alertController.create({
@@ -41,31 +53,19 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  private productService = inject(ProductService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private alertController = inject(AlertController);
-
-  constructor() { }
-
-  ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.productsSignal = this.productService.fetchProducts();
-    });
-    this.filteredProduct = this.productsSignal;
-  }
-
   filterData(event: any) {
-    let searchterm = event.target.value;
+    let searchterm = event.target.value.toLowerCase();
     if (searchterm) {
-      this.productsSignal = this.productsSignal.filter((product: any) =>
-        product.name.toLowerCase().includes(searchterm.toLowerCase()) ||
-        product.id.toString().toLowerCase().includes(searchterm.toLowerCase()) ||
-        product.price.toString().toLowerCase().includes(searchterm.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchterm.toLowerCase())
+      const filtered = this.productsSignal().filter(
+        (product: any) =>
+          product.name.toLowerCase().includes(searchterm) ||
+          product.id.toString().toLowerCase().includes(searchterm) ||
+          product.price.toString().toLowerCase().includes(searchterm) ||
+          product.category.toLowerCase().includes(searchterm)
       );
+      this.filteredProductSignal.set(filtered);
     } else {
-      this.productsSignal = this.filteredProduct;
+      this.filteredProductSignal.set(this.productsSignal());
     }
   }
 
@@ -75,6 +75,7 @@ export class HomePage implements OnInit {
 
   delete(productId: number) {
     this.productService.deleteProduct(productId);
-    this.ngOnInit();
+    this.productsSignal.set(this.productService.fetchProducts());
+    this.filteredProductSignal.set(this.productsSignal());
   }
 }

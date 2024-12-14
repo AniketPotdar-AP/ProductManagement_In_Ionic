@@ -7,42 +7,45 @@
 <ion-content [fullscreen]="true">
   <section class="main">
     <ion-searchbar (input)="filterData($event)"></ion-searchbar>
-    @if (productsSignal?.length) {
-    <div class="table-container">
-      <table class="styled-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Category</th>
-            <th>In Stock</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let product of productsSignal">
-            <td>{{product?.id}}</td>
-            <td>{{product?.name}}</td>
-            <td>{{product?.price}}</td>
-            <td>{{product?.category}}</td>
-            <td>{{product?.inStock === true ? 'In Stock' : 'Out of Stock'}}</td>
-            <td>
-              <ion-button (click)="updateProduct(product?.id)">
-                <ion-icon name="create"></ion-icon>
-              </ion-button>
-              <ion-button (click)="presentAlert(product?.id)" color="danger">
-                <ion-icon name="trash"></ion-icon>
-              </ion-button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+
+    <div *ngIf="filteredProductSignal()?.length; else noData">
+      <div class="table-container">
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Product Name</th>
+              <th>Price</th>
+              <th>Category</th>
+              <th>In Stock</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of filteredProductSignal()">
+              <td>{{product?.id}}</td>
+              <td>{{product?.name}}</td>
+              <td>{{product?.price}}</td>
+              <td>{{product?.category}}</td>
+              <td>{{product?.inStock === true ? 'In Stock' : 'Out of Stock'}}</td>
+              <td>
+                <ion-button (click)="updateProduct(product?.id)">
+                  <ion-icon name="create"></ion-icon>
+                </ion-button>
+                <ion-button (click)="presentAlert(product?.id)" color="danger">
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    } @else {
-    <div class="emptyData">
-      No Data Found
-    </div>
-    }
+
+    <ng-template #noData>
+      <div class="emptyData">
+        No Data Found
+      </div>
+    </ng-template>
   </section>
 </ion-content>

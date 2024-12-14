@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonBackButton } from '@ionic/angular/standalone';
 import { ionicImports } from 'src/app/shared/providers/ionic-imports';
@@ -23,6 +23,8 @@ export class UpdateProductComponent implements OnInit {
   private router = inject(Router);
   private toasterService = inject(ToastController);
 
+  productSignal = signal<any>(null);
+
   constructor() {
     this.productForm = this.fb.group({
       id: [this.productId],
@@ -37,9 +39,15 @@ export class UpdateProductComponent implements OnInit {
     this.route.params.subscribe((params) => {
       if (params['id']) {
         this.productId = params['id'];
-        this.productForm.patchValue(this.productService.getProductById(this.productId))
+        this.loadProductData(this.productId);
       }
     });
+  }
+
+  loadProductData(id: any) {
+    const product = this.productService.getProductById(id);
+    this.productSignal.set(product);
+    this.productForm.patchValue(product);
   }
 
   updateProduct() {

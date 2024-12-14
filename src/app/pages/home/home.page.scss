@@ -1,0 +1,52 @@
+.main {
+  padding: 1rem 0;
+
+  ion-grid {
+    margin: 1.5rem 5px;
+    overflow-x: auto;
+  }
+
+  .table-container {
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin-top: 1rem;
+  }
+
+  .styled-table {
+    width: 800px;
+    min-width: 800px;
+    border-collapse: collapse;
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    max-width: 300px;
+  }
+
+  .styled-table thead th {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .styled-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  .emptyData {
+    display: flex;
+    font-size: 20px;
+    justify-content: center;
+    margin-top: 5rem;
+  }
+}

@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>Update Product</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form (submit)="updateProduct()" [formGroup]="productForm" class="container">
+    <ion-item>
+      <ion-input formControlName="name" label="Product Name" labelPlacement="floating"
+        placeholder="Enter Name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="price" type="number" label="Product Price" labelPlacement="floating"
+        placeholder="Enter Price"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="category" label="Product Category" labelPlacement="floating"
+        placeholder="Enter Categoty"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-toggle formControlName="inStock">In Stock</ion-toggle><br /><br />
+    </ion-item>
+
+    <section class="btn">
+      <ion-button [disabled]="!productForm.valid" type="submit">Update Product</ion-button>
+    </section>
+  </form>
+</ion-content>

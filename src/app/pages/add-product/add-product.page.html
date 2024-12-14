@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Add Product</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form (submit)="submit()" [formGroup]="productForm" class="container">
+    <ion-item>
+      <ion-input formControlName="name" label="Product Name" labelPlacement="floating"
+        placeholder="Enter Name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="price" type="number" label="Product Price" labelPlacement="floating"
+        placeholder="Enter Price"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="category" label="Product Category" labelPlacement="floating"
+        placeholder="Enter Categoty"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-toggle formControlName="inStock">In Stock</ion-toggle><br /><br />
+    </ion-item>
+
+    <section class="btn">
+      <ion-button [disabled]="!productForm.valid" type="submit">Add Product</ion-button>
+    </section>
+  </form>
+</ion-content>

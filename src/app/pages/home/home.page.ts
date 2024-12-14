@@ -30,6 +30,7 @@ export class HomePage implements OnInit {
   }
 
   async presentAlert(id: number) {
+    console.log('Alert triggered');
     const alert = await this.alertController.create({
       header: 'Delete Product',
       message: 'Are you sure you want to delete the product?',
